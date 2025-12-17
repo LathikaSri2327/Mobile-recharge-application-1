@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { apiController } from '../controller/apiController';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -13,6 +13,27 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Clear form fields and localStorage on mount/refresh
+    setFormData({
+      email: '',
+      password: '',
+      rememberMe: false
+    });
+    setError('');
+    
+    // Clear any stored form data
+    localStorage.removeItem('loginFormData');
+    
+    // Force clear browser autofill after a short delay
+    setTimeout(() => {
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      if (emailInput) emailInput.value = '';
+      if (passwordInput) passwordInput.value = '';
+    }, 100);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -21,44 +42,61 @@ const LoginPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     
-    // Get registered users from localStorage
-    const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    
-    // Find user with matching credentials
-    const user = registeredUsers.find(u => 
-      u.email === formData.email && u.password === formData.password
-    );
-    
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      navigate('/dashboard');
-    } else {
-      setError('Invalid email or password');
+    // Client-side validation
+    if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      setLoading(false);
+      return;
     }
     
-    setLoading(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      console.log('Submitting login:', formData.email);
+      await apiController.handleLogin({
+        email: formData.email,
+        password: formData.password
+      }, navigate);
+      
+      // Clear form fields on successful login
+      setFormData({
+        email: '',
+        password: '',
+        rememberMe: false
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (error.message?.includes('Unable to connect')) {
+        errorMessage = 'Cannot connect to server. Please check if the backend is running.';
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="login-page">
       <div className="container">
-        <motion.div 
-          className="login-container"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div 
-            className="login-card card"
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+        <div className="login-container">
+          <div className="login-card card">
             <div className="login-header">
               <h1>Welcome Back</h1>
               <p>Sign in to your account</p>
@@ -70,13 +108,8 @@ const LoginPage = () => {
               </div>
             )}
             
-            <form onSubmit={handleSubmit} className="login-form">
-              <motion.div 
-                className="form-group"
-                initial={{ x: -30, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-              >
+            <form onSubmit={handleSubmit} className="login-form" autoComplete="new-password">
+              <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
@@ -87,15 +120,12 @@ const LoginPage = () => {
                   placeholder="Enter your email"
                   required
                   disabled={loading}
+                  autoComplete="new-password"
+                  autoFocus={false}
                 />
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="form-group"
-                initial={{ x: -30, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-              >
+              <div className="form-group">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -106,15 +136,11 @@ const LoginPage = () => {
                   placeholder="Enter your password"
                   required
                   disabled={loading}
+                  autoComplete="new-password"
                 />
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="form-options"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
+              <div className="form-options">
                 <label className="checkbox-wrapper">
                   <input
                     type="checkbox"
@@ -128,56 +154,38 @@ const LoginPage = () => {
                 <Link to="/forgot-password" className="forgot-link">
                   Forgot Password?
                 </Link>
-              </motion.div>
+              </div>
 
-              <motion.button
+              <button
                 type="submit"
                 className="btn btn-primary login-btn"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 disabled={loading}
               >
                 {loading ? 'Signing In...' : 'Sign In'}
-              </motion.button>
+              </button>
             </form>
 
-            <motion.div 
-              className="login-footer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-            >
+            <div className="login-footer">
               <div className="divider">
                 <span>or</span>
               </div>
               
               <div className="social-login">
-                <motion.button
-                  className="social-btn google-btn"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <button className="social-btn google-btn">
                   Continue with Google
-                </motion.button>
-                <motion.button
-                  className="social-btn facebook-btn"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                </button>
+                <button className="social-btn facebook-btn">
                   Continue with Facebook
-                </motion.button>
+                </button>
               </div>
 
               <p className="signup-link">
                 Don't have an account? 
                 <Link to="/register"> Sign up here</Link>
               </p>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

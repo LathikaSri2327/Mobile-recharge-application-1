@@ -1,153 +1,142 @@
-# Mobile Recharge Web Application
+# Mobile Recharge App
 
-A modern React-based mobile recharge application built with Vite, featuring user authentication, recharge plans, and responsive design.
+A full-stack mobile recharge application built with React.js and Node.js.
 
-## 🚀 Features
+## 🚀 Live Demo
 
-- **User Authentication**: Login/Register with form validation
-- **Mobile Recharge**: Browse and select recharge plans
-- **Responsive Design**: Works on mobile, tablet, and desktop
-- **Modern UI**: Styled with Tailwind CSS and Framer Motion animations
-- **Form Validation**: React Hook Form with Yup validation
-- **State Management**: Context API for global state
-- **Routing**: React Router v6 for navigation
+- **Frontend**: [Deploy on Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/yourusername/mobile-recharge-app)
+- **Backend**: [Deploy on Render](https://render.com)
 
-## 🛠️ Technologies Used
+## 📋 Features
 
-- **Frontend**: React 18 + Vite
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Routing**: React Router v6
-- **Forms**: React Hook Form + Yup
-- **State**: Context API + useState
-- **Icons**: React Icons
+- User Authentication (Login/Register)
+- Mobile Recharge Plans
+- Bill Payments
+- Wallet Management
+- Admin Dashboard
+- Agent Portal
+- Transaction History
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+- React.js
+- React Router
+- Axios
+- React Toastify
+
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- bcryptjs
+
+## 🏃‍♂️ Quick Start
+
+### Prerequisites
+- Node.js (v18+)
+- MongoDB
+- Git
+
+### Local Development
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/yourusername/mobile-recharge-app.git
+   cd mobile-recharge-app
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   cp .env.example .env
+   # Update .env with your MongoDB URI
+   npm start
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   # In new terminal
+   npm install
+   npm start
+   ```
+
+## 🌐 Deployment
+
+### Backend (Render)
+1. Connect GitHub repository to Render
+2. Set root directory to `backend`
+3. Add environment variables:
+   ```
+   NODE_ENV=production
+   MONGODB_URI=your_mongodb_atlas_uri
+   JWT_SECRET=your_jwt_secret
+   ```
+
+### Frontend (Netlify)
+1. Connect GitHub repository to Netlify
+2. Build settings:
+   - Build command: `npm run build`
+   - Publish directory: `build`
+3. Environment variables:
+   ```
+   REACT_APP_API_URL=https://your-backend.onrender.com/api
+   ```
 
 ## 📁 Project Structure
 
 ```
-src/
-├── components/
-│   ├── Header.js
-│   ├── Footer.js
-│   ├── Navbar.jsx
-│   └── Sidebar.jsx
-├── pages/
-│   ├── HomePage.js
-│   ├── LoginPage.js
-│   ├── RegisterPage.js
-│   └── Dashboard.js
-├── context/
-│   └── AuthContext.js
-├── styles/
-│   ├── App.css
-│   └── index.css
-├── App.js
-└── index.js
+mobile-recharge-app/
+├── backend/                 # Node.js backend
+│   ├── controllers/        # Route controllers
+│   ├── middleware/         # Custom middleware
+│   ├── models/            # MongoDB models
+│   ├── routes/            # API routes
+│   └── server.js          # Entry point
+├── src/                   # React frontend
+│   ├── components/        # Reusable components
+│   ├── pages/            # Page components
+│   ├── services/         # API services
+│   └── utils/            # Utility functions
+└── public/               # Static assets
 ```
 
-## 🎯 Assignment Requirements Completed
+## 🔧 Environment Variables
 
-### Day 6: React Project Setup & Component Architecture
-- ✅ Set up React project using Vite
-- ✅ Created reusable components (Navbar, Footer, Sidebar)
-- ✅ Implemented functional components with JSX
-- ✅ Proper folder structuring
+### Backend (.env)
+```
+MONGODB_URI=mongodb://localhost:27017/mobile-recharge
+PORT=5002
+JWT_SECRET=your-secret-key
+```
 
-### Day 7: Tailwind CSS & State Management
-- ✅ Integrated Tailwind CSS for styling
-- ✅ Used props for dynamic components
-- ✅ Implemented useState for interactivity
-- ✅ Context API for global state management
+### Frontend (.env.production)
+```
+REACT_APP_API_URL=https://your-backend.onrender.com/api
+```
 
-### Day 8: React Routing & Authentication
-- ✅ React Router v6 implementation
-- ✅ Landing Page, Login, Signup pages
-- ✅ Navigation with proper routing
-- ✅ Authentication state management
+## 📝 API Endpoints
 
-### Day 9: Form Handling & Validation
-- ✅ React Hook Form integration
-- ✅ Yup validation schemas
-- ✅ Form validation on Login/Register pages
-- ✅ Error handling and user feedback
-
-### Day 10: Final Frontend Completion
-- ✅ Responsive design for all devices
-- ✅ Complete user flow from landing to dashboard
-- ✅ Smooth animations and transitions
-- ✅ Loading states and user feedback
-
-## 🚀 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/SECE-24-28/classroom-project-[your-repo]
-   cd mobile-recharge-app
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-4. **Build for production**
-   ```bash
-   npm run build
-   ```
-
-## 📱 Core React Concepts Demonstrated
-
-### JSX
-JSX allows us to write HTML-like syntax in JavaScript, making component creation intuitive and readable.
-
-### Virtual DOM
-React's Virtual DOM efficiently updates only changed elements, improving performance compared to direct DOM manipulation.
-
-### Functional Components
-Modern React uses functional components with hooks, providing cleaner code and better performance than class components.
-
-### Props & State
-Props pass data between components while state manages component-specific data that can change over time.
-
-### Component Hierarchy
-Components are organized in a tree structure where parent components pass data to children through props.
-
-### Folder Structuring
-Organized code structure with separate folders for components, pages, context, and styles improves maintainability.
-
-## 🎨 UI/UX Features
-
-- Modern gradient backgrounds with transparency
-- Smooth animations using Framer Motion
-- Responsive grid layouts
-- Interactive hover effects
-- Form validation with real-time feedback
-- Loading states and error handling
-
-## 🔐 Authentication Flow
-
-1. User visits landing page
-2. Can register for new account or login
-3. Form validation ensures data integrity
-4. Successful authentication redirects to dashboard
-5. Context API maintains login state across app
-
-## 📋 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+- `GET /api/plans` - Get recharge plans
+- `POST /api/recharge` - Process recharge
+- `GET /api/wallet/balance` - Get wallet balance
 
 ## 🤝 Contributing
 
-This project was created as part of the React learning curriculum. Feel free to explore the code and suggest improvements.
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
 ## 📄 License
 
-This project is created for educational purposes.
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support, email support@example.com or create an issue on GitHub.

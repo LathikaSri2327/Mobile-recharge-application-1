@@ -32,6 +32,19 @@ const HomePage = () => {
             >
               Instant recharge for all major operators
             </motion.p>
+            <motion.div 
+              className="hero-buttons"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <Link to="/login" className="btn btn-secondary hero-btn">
+                Login
+              </Link>
+              <Link to="/register" className="btn btn-primary hero-btn">
+                Register
+              </Link>
+            </motion.div>
           </div>
           
         </motion.section>

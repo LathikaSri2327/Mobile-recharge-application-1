@@ -32,7 +32,7 @@
 }
 
 .register-header p {
-  color: #555;
+  color: #333;
   font-size: 1rem;
 }
 
@@ -180,6 +180,31 @@
 
 .login-link a:hover {
   color: var(--primary);
+}
+
+.role-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+  color: var(--dark-gray);
+  transition: all 0.3s ease;
+}
+
+.role-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.role-description {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--secondary);
+  font-style: italic;
 }
 
 @media (max-width: 768px) {

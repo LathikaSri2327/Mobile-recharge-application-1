@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import { apiController } from '../controller/apiController';
 import './RegisterPage.css';
 
 const RegisterPage = () => {
@@ -12,6 +13,7 @@ const RegisterPage = () => {
     phone: '',
     password: '',
     confirmPassword: '',
+    role: 'customer',
     agreeTerms: false
   });
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -50,9 +52,8 @@ const RegisterPage = () => {
     return colors[passwordStrength] || '#ff4444';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted', formData);
     setLoading(true);
     setError('');
     
@@ -68,6 +69,7 @@ const RegisterPage = () => {
       setLoading(false);
       return;
     }
+    
     if (!formData.agreeTerms) {
       setError('Please agree to the terms and conditions');
       setLoading(false);
@@ -80,33 +82,36 @@ const RegisterPage = () => {
       return;
     }
     
-    // Get existing users from localStorage
-    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    
-    // Check if user already exists
-    if (existingUsers.find(user => user.email === formData.email)) {
-      setError('User with this email already exists');
+    try {
+      console.log('Submitting registration:', formData);
+      await apiController.handleRegister({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        role: formData.role
+      }, navigate);
+      
+      // Clear form fields on successful registration
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        role: 'customer',
+        agreeTerms: false
+      });
+      setPasswordStrength(0);
+    } catch (error) {
+      console.error('Registration error:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed. Please try again.';
+      setError(errorMessage);
+    } finally {
       setLoading(false);
-      return;
     }
-    
-    // Create new user
-    const newUser = {
-      id: Date.now(),
-      name: `${formData.firstName} ${formData.lastName}`,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password
-    };
-    
-    // Save to localStorage
-    existingUsers.push(newUser);
-    localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
-    
-    console.log('User registered successfully', newUser);
-    alert('Registration successful! Please login with your credentials.');
-    navigate('/login');
-    setLoading(false);
   };
 
   return (
@@ -272,6 +277,33 @@ const RegisterPage = () => {
                 {formData.confirmPassword && formData.password !== formData.confirmPassword && (
                   <span className="error-text">Passwords do not match</span>
                 )}
+              </motion.div>
+
+              <motion.div 
+                className="form-group"
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.05 }}
+              >
+                <label htmlFor="role">Account Type</label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  required
+                  disabled={loading}
+                  className="role-select"
+                >
+                  <option value="customer">Customer - Mobile Recharge & Bill Payments</option>
+                  <option value="agent">Agent - Help customers with transactions</option>
+                  <option value="admin">Admin - System management</option>
+                </select>
+                <small className="role-description">
+                  {formData.role === 'customer' && 'Perfect for personal mobile recharges and bill payments'}
+                  {formData.role === 'agent' && 'For business owners helping customers with recharges'}
+                  {formData.role === 'admin' && 'Full system access and user management'}
+                </small>
               </motion.div>
 
               <motion.div 

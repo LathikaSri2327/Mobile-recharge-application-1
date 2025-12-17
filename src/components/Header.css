@@ -1,6 +1,6 @@
 .header {
-  background: var(--primary);
-  box-shadow: 0 2px 10px rgba(137, 108, 108, 0.3);
+  background: #333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -16,7 +16,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--accent);
+  color: #007bff;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -27,26 +27,50 @@
   display: flex;
   gap: 2rem;
   align-items: center;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .nav-link {
-  color: var(--white);
+  color: #ffffff !important;
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   transition: all 0.3s ease;
   position: relative;
+  display: block;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .nav-link:hover {
-  color: var(--accent);
-  background: rgba(245, 250, 225, 0.1);
+  color: #007bff !important;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-link.active {
-  color: var(--accent);
-  background: rgba(245, 250, 225, 0.2);
+  color: #007bff !important;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  color: #ffffff !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.user-info {
+  color: #007bff !important;
+  font-size: 0.9rem;
+  margin: 0 15px;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .menu-toggle {
@@ -61,7 +85,7 @@
 .menu-toggle span {
   width: 25px;
   height: 3px;
-  background: var(--accent);
+  background: #007bff;
   margin: 3px 0;
   transition: 0.3s;
   border-radius: 2px;
@@ -77,18 +101,16 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--primary);
+    background: #333;
     flex-direction: column;
     padding: 1rem;
     transform: translateY(-100%);
-    opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
   }
 
   .nav-open {
     transform: translateY(0);
-    opacity: 1;
     visibility: visible;
   }
 
