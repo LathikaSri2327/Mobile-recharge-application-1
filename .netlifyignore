@@ -1,0 +1,23 @@
+# Backend files
+backend/
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+test-*.js
+*test*.js
+
+# Batch files
+*.bat
+
+# Development files
+.github/
+render.yaml
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
